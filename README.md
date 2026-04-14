@@ -263,3 +263,8 @@ pipx run ignr -p python > .gitignore
 git init .
 gh repo create
 ```
+
+# Informações Adicionais
+
+### PrinterSchema
+foi utilizado o tipo ```IPvAnyAddress``` importado do pydantic, para saber mais → <b> [IPvAnyAddress](https://mintlify.wiki/pydantic/pydantic/api/network-types#ipvanyaddress) </b>
