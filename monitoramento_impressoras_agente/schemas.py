@@ -1,7 +1,8 @@
 from pydantic import BaseModel, IPvAnyAddress
 
+
 class Message(BaseModel):
-    message:str
+    message: str
 
 
 class PrinterSchema(BaseModel):
@@ -18,14 +19,15 @@ class SnmpResultSchema(BaseModel):
     num_serial: str
     model: str
     counter: str
-    
+
 
 class RespScanSchema(BaseModel):
     connection: str | None
     ip: IPvAnyAddress
-    network_id:int
+    network_id: int
     branch_id: int
-    result: list[SnmpResultSchema]
+    result: SnmpResultSchema | dict
+
 
 class ListRespScanSchema(BaseModel):
     list_resps: list[RespScanSchema]

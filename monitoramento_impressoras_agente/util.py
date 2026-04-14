@@ -1,23 +1,23 @@
 import aioping
-
-from pysnmp.hlapi.asyncio import *
 from pysnmp.entity.engine import SnmpEngine
+from pysnmp.hlapi.asyncio import *
 
-from .loggin import log_info, log_error
+from .logging_utils import log_error, log_info
 
-async def scan(ip):
+
+async def async_scan(ip):
     try:
         delay = await aioping.ping(ip, timeout=3)
         return True
     except TimeoutError:
         return False
     except Exception as e:
-        # Adicione este print temporário para ver o erro real no console
-        print(f"ERRO NO PING para {ip}: {e}") 
+        print(f"ERRO NO PING para {ip}: {e}")
         return False
 
-async def snmp(ip, listaSnmp=''):
-    community = 'public'  # Comunidade SNMP configurada na impressora
+
+async def async_snmp(ip, listaSnmp=''):
+    community = 'public'  # Comunidade SNMP
 
     oids = listaSnmp if listaSnmp else [
         '1.3.6.1.2.1.1.5.0',
@@ -50,6 +50,6 @@ async def snmp(ip, listaSnmp=''):
     results = []
     for oid, val in var_binds:
         results.append({'oid': str(oid), 'resposta': str(val)})
-        #log_info(f"OID {oid} → Resposta: {val}")
+        # log_info(f"OID {oid} → Resposta: {val}")
 
     return results

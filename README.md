@@ -73,7 +73,7 @@ Testing 3.13.2 (cpython) ... Done
 ### 1 - iniciar nosso projeto
 
 ```
-poetry new --nome_do_projeto
+poetry new --flat nome_do_projeto
 cd nome_do_projeto
 ```
 
