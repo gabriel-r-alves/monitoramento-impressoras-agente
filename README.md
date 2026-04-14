@@ -5,6 +5,14 @@ Agente assíncrono desenvolvido em Python para coleta de dados de contadores e s
 ## 📚 Sobre este Projeto (Estudo e Prática) - Em desenvolvimento
 Este repositório é parte de um ecossistema maior de monitoramento de ativos, desenvolvido com o objetivo de consolidar conhecimentos em programação assíncrona, protocolos de rede e arquitetura de sistemas distribuídos. 
 
+## 📚 Referências e Créditos
+
+Este projeto foi desenvolvido aplicando conceitos e padrões de arquitetura aprendidos em:
+
+* **FastAPI do Zero** - [Ministrado por Eduardo Mendes](https://github.com/dunossauro).
+* **Documentação Oficial do FastAPI** - [fastapi.tiangolo.com](https://fastapi.tiangolo.com/)
+* **Padrões de Conventional Commits** - [conventionalcommits.org](https://www.conventionalcommits.org/)
+
 ## 🚀 Tecnologias Principais
 
 * <b> Python 3.13 </b> (Cpython)
