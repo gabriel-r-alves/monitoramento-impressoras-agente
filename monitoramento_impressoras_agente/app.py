@@ -29,7 +29,7 @@ async def scan():
     
     return snmp_data
 '''
-
+ 
 
 @app.post('/scan/printers/', status_code=HTTPStatus.CREATED, response_model=RespScanSchema)
 async def scan_printer(printer: PrinterSchema):

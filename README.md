@@ -1,270 +1,84 @@
-# Passo a passo inicial
+# Monitoramento de Impressoras - Agente 🖨️
 
-## Instalação
+Agente assíncrono desenvolvido em Python para coleta de dados de contadores e status de impressoras via protocolo SNMP. O agente é capaz de escanear a rede, identificar dispositivos online e extrair informações críticas como número de série, modelo e volume de impressões.
 
-### 1 - pipx
-Para instalar o pipx:
+## 📚 Sobre este Projeto (Estudo e Prática) - Em desenvolvimento
+Este repositório é parte de um ecossistema maior de monitoramento de ativos, desenvolvido com o objetivo de consolidar conhecimentos em programação assíncrona, protocolos de rede e arquitetura de sistemas distribuídos. 
 
-```
-$ Execução no terminal
+## 🚀 Tecnologias Principais
 
-pip install --user pipx
-```
+* <b> Python 3.13 </b> (Cpython)
+* <b> FastAPI: </b> Interface de comunicação e API.
+* <b> PySNMP (Lextudio): </b> Comunicação assíncrona com os dispositivos.
+* <b> Poetry: </b> Gerenciamento de dependências e ambiente virtual.
+* <b> Taskipy: </b> Automação de tarefas de desenvolvimento.
 
-Para o nosso sistema reconhecer o caminho das ferramentas instaladas via pipx podemos executar o comando:
-
-```
-$ Execução no terminal!
-
-pipx ensurepath
-```
-
-### 2 - poetry
-Para instalar o poetry:
+## 🛠️ Como Executar
+Se você já seguiu os passos no [SETUP.md](SETUP.md), basta rodar:
 
 ```
-$ Execução no terminal!
+# Entrar no ambiente virtual
+poetry shell
 
-pipx install poetry
+# Rodar o agente em modo de desenvolvimento
+task run
+
+# ou se não funcionar
+poetry run task run
 ```
 
-Para adicionar o shell ao poetry:
+O servidor estará disponível em http://127.0.0.1:8000.
 
-<b> Via pipx: </b>
+## 📡 Endpoints Principais
+### 1. Escanear Impressora
+Realiza um ping e coleta dados SNMP de um IP específico.
 
-```
-$ Execução no terminal!
-
-pipx inject poetry poetry-plugin-shell
-```
-
-<b> Via poetry self</b>
+* <b> POST </b> /scan/printers/
+* <b> Payload: </b>
 
 ```
-$ Execução no terminal!
-
-poetry self add poetry-plugin-shell
+{
+  "ip": "192.168.50.57",
+  "branch_id": 1,
+  "network_id": 10
+}
 ```
 
-Após isso rodar o seguinte comando, para que o poetry crie por padrão as venvs dentro da pasta do projeto:
+### 2. Documentação Automática
+Acesse o Swagger UI para testar todos os endpoints:
+
+* <b> Swagger UI: </b> http://127.0.0.1:8000/docs
+
+* <b> ReDoc: </b> http://127.0.0.1:8000/redoc
+
+## ⚙️ Configurações Técnicas (MIBs/OIDs)
+
+O agente utiliza os seguintes OIDs padrão para coleta:
+
+* <b> Serial: </b> 1.3.6.1.2.1.43.5.1.1.17.1
+
+* <b> Modelo: </b> 1.3.6.1.2.1.25.3.2.1.3.1
+
+* <b> Contador Total: </b> 1.3.6.1.2.1.43.10.2.1.4.1.1
+
+## 🧪 Desenvolvimento
+Para garantir a qualidade do código, utilizamos ferramentas de linting e testes automatizados:
 
 ```
-poetry config virtualenvs.in-project true
+# Rodar análise de código e corretor ortográfico
+task lint
+
+# Formatar o código automaticamente (PEP-8)
+task format
+
+# Executar suíte de testes com cobertura (em desenvolvimento)
+task test
 ```
 
-### 3 - Python
+## 📝 Notas de Versão
+* <b> v0.1.0: </b> Implementação inicial da coleta assíncrona e integração com impressoras Samsung e HP.
 
-Para instalar o python da versão que vamos utilizar (3.13):
+## 📂 Documentação Auxiliar
+Para entender como configurar o ambiente do zero ou contribuir com o projeto, veja o nosso guia:
 
-```
-poetry python install 3.13
-```
-
-Uma resposta similar a esta deve ser retornada ao executar o comando:
-
-Resposta do comando `poetry python install`
-```
-Downloading and installing 3.13.2 (cpython) ... Done 
-Testing 3.13.2 (cpython) ... Done
-```
-
-## Iniciando um projeto
-
-### 1 - iniciar nosso projeto
-
-```
-poetry new --flat nome_do_projeto
-cd nome_do_projeto
-```
-
-Ele criará uma estrutura de arquivos e pastas como essa:
-
-```
-.
-├── nome_do_projeto
-│  └── __init__.py
-├── pyproject.toml
-├── README.md
-└── tests
-   └── __init__.py
-```
-
-### 2 - Versão do poetry
-
-Para usar a versão especifica e criar nosso ambiente de desenvolvimento:
-
-```
-poetry env use 3.13
-```
-
-### 3 - Configurar pyproject
-
-Em conjunto com essa instrução, devemos também especificar no Poetry que usaremos exatamente a versão 3.13 em nosso projeto. Para isso, alteramos o arquivo de configuração pyproject.toml na raiz do projeto:
-
-pyproject.toml
-
-```
-[project]
-# ...
-requires-python = ">=3.13,<4.0"
-```
-
-### 4 - instalando FastAPI
-
-Com toda a base do nosso projeto pronta, podemos finalmente instalar o FastAPI:
-```
-poetry install 
-poetry add 'fastapi[standard]'
-```
-
-### 5 - Instalando as ferramentas de desenvolvimento
-
-As ferramentas escolhidas são:
-
-<b> - taskipy: </b> ferramenta usada para criação de comandos. Como executar a aplicação, rodar os testes, etc.
-
-<b> - pytest: </b> ferramenta para escrever e executar testes
-
-<b> - ruff: </b> Uma ferramenta que tem duas funções no nosso código:
-    
-    Um analisador estático de código (um linter), para dizer se não estamos infringindo alguma boa prática de programação;
-    
-    Um formatador de código. Para seguirmos um estilo único de código. Vamos nos basear na PEP-8.
-    
-<b>  - typos: </b> ferramenta para pegar erros de grafia em inglês no código. Como um não nativo de inglês, as vezes acabo escrevendo alguns nomes incorretos. Talvez isso ajude você também.
-
-Para instalar essas ferramentas que usaremos em desenvolvimento, podemos usar um grupo de dependências (--group dev no poetry) focado nelas, para não serem instaladas quando nossa aplicação estiver em produção:
-
-```
-poetry add --group dev pytest pytest-cov taskipy ruff typos
-```
-
-## Configurando as ferramentas de desenvolvimento
-
-Após a instalação das ferramentas de desenvolvimento, precisamos definir as configurações de cada uma individualmente no arquivo pyproject.toml.
-
-### Ruff
-
-Na configuração global do Ruff queremos alterar somente duas coisas. O comprimento de linha para 79 caracteres (conforme sugerido na PEP-8) e, em seguida, informaremos que o diretório de migrações de banco de dados será ignorado na checagem e na formatação:
-
-pyproject.toml
-
-```
-[tool.ruff]
-line-length = 79
-extend-exclude = ['migrations']
-```
-
-### Linter
-
-Durante a análise estática do código, queremos buscar por coisas específicas. No Ruff, precisamos dizer exatamente o que ele deve analisar. Isso é feito por códigos. Usaremos estes:
-
-* <b> I (Isort): </b> Checagem de ordenação de imports em ordem alfabética
-
-* <b> F (Pyflakes): </b> Procura por alguns erros em relação a boas práticas de código
-
-* <b> E (Erros pycodestyle): </b> Erros de estilo de código
-
-* <b> W (Avisos pycodestyle): </b> Avisos de coisas não recomendadas no estilo de código
-
-* <b> PL (Pylint): </b> Como o F, também procura por erros em relação a boas práticas de código
-
-* <b> PT (flake8-pytest): </b> Checagem de boas práticas do Pytest
-
-pyproject.toml
-
-```
-[tool.ruff.lint]
-preview = true
-select = ['I', 'F', 'E', 'W', 'PL', 'PT']
-```
-
-### Formatter
-
-A formatação do Ruff praticamente não precisa ser alterada. Pois ele vai seguir as boas práticas e usar a configuração global de 79 caracteres por linha. A única alteração que farei é o uso de aspas simples ' no lugar de aspas duplas ":
-
-pyproject.toml
-
-```
-[tool.ruff.format]
-preview = true
-quote-style = 'single'
-```
-
-### pytest
-
-O Pytest é uma framework de testes, que usaremos para escrever e executar nossos testes. O configuraremos para reconhecer o caminho base para execução dos testes na raiz do projeto .:
-
-pyproject.toml
-
-```
-[tool.pytest.ini_options]
-pythonpath = "."
-addopts = '-p no:warnings'
-```
-
-### Typos
-
-O typos vai nos ajudar com alguns errinhos que acabam acontecendo enquanto escrevemos código em inglês. Para ignorar o typos em determinados arquivos, poderiamos fazer algo parecido com isso:
-
-pyproject.toml
-
-```
-[tool.typos.files]
-extend-exclude = ["*.md"] 
-```
-
-### Taskipy
-
-Alguns comandos que criaremos agora no início:
-
-pyproject.toml
-
-```
-[tool.taskipy.tasks]
-pre_lint = 'typos'
-lint = 'ruff check'
-pre_format = 'ruff check --fix'
-format = 'ruff format'
-run = 'fastapi dev fast_zero/app.py'
-pre_test = 'task lint'
-test = 'pytest -s -x --cov=fast_zero -vv'
-post_test = 'coverage html'
-```
-
-Os comandos definidos fazem o seguinte:
-
-* <b> pre_lint: </b> faz a busca por typos de inglês
-* <b> lint: </b> faz a checagem de boas práticas do código python
-* <b> pre_format: </b> faz algumas correções de boas práticas automaticamente
-* <b> format: </b> executa a formatação do código em relação às convenções de estilo de código
-* <b> run: </b> executa o servidor de desenvolvimento do FastAPI
-* <b> pre_test: </b> executa a camada de lint antes de executar os testes
-* <b> test:  </b>executa os testes com pytest de forma verbosa (-vv) e adiciona nosso código como base de cobertura
-* <b> post_test: </b> gera um report de cobertura após os testes
-
-Para executar um comando, é bem mais simples, precisando somente passar a palavra ```task <comando>```.
-
-<b> Comandos com prefixo pre e pos </b>
-
-Todos os comandos do taskipy que apresentam prefixos como pre_comando ou post_comando não precisam ser executados diretamente. Por exemplo, se executarmos o comando task test ele executará o comando pre_test e caso tudo ocorra bem, sem erros, ele executará o test, caso não aconteçam erros, o post_test será executado.
-
-## Repositório
-
-### Criando o .gitignore
-Executar o comando:
-
-```
-pipx run ignr -p python > .gitignore
-```
-
-### Iniciando o repositório
-```
-git init .
-gh repo create
-```
-
-# Informações Adicionais
-
-### PrinterSchema
-foi utilizado o tipo ```IPvAnyAddress``` importado do pydantic, para saber mais → <b> [IPvAnyAddress](https://mintlify.wiki/pydantic/pydantic/api/network-types#ipvanyaddress) </b>
+👉 [Guia de Instalação e Setup](SETUP.md)
