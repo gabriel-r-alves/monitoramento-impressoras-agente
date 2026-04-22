@@ -1,3 +1,9 @@
+'''
+Não utilizar este arquivo somente para testes, será removido!.
+
+Os schemas estão from monitoramento_impressoras_core.schemas, é um repositorio git que serve como biblioteca, onde é compartilhado os schemas entre agente e backend.
+'''
+
 from pydantic import BaseModel, IPvAnyAddress
 
 

@@ -12,6 +12,7 @@ dependencies = [
     "pysnmp-lextudio (==6.1.2)",
     "aioping (>=0.4.0,<0.5.0)",
     "pyasn1 (==0.5.1)",
+    "monitoramento-impressoras-core @ git+ssh://git@github.com/gabriel-r-alves/monitoramento_impressoras_core.git",
 ]
 
 [tool.ruff]
